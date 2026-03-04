@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ОЛОЛО · ПЫЩПЫЩ ПЫЩ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ─────────────────────────────────── */
+    :root {
+      --cream:  #fdf8ec;
+      --dark:   #1a1a3e;
+      --yellow: #FFD54F;
+      --orange: #FF8C42;
+      --red:    #FF5B5B;
+      --blue:   #4EB8FF;
+      --green:  #42D87C;
+      --sp-sm:  16px;
+      --sp-md:  20px;
+      --sp-lg:  52px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Fredoka One', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ───────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      pointer-events: none;
+      opacity: 0.055;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ── PAGE ────────────────────────────────────── */
+    .page {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-md);
+      padding: var(--sp-lg) var(--sp-sm);
+      position: relative;
+    }
+
+    /* ── SPARKLES (fixed background) ────────────── */
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    /* ── TITLE ───────────────────────────────────── */
+    .title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: clamp(3rem, 9vw, 6rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: #FFD54F;
+      /* cartoon outline via layered text-shadow */
+      text-shadow:
+         4px  4px 0 var(--dark),
+        -4px  4px 0 var(--dark),
+         4px -4px 0 var(--dark),
+        -4px -4px 0 var(--dark),
+         4px  0   0 var(--dark),
+        -4px  0   0 var(--dark),
+         0    4px 0 var(--dark),
+         0   -4px 0 var(--dark);
+      position: relative;
+      z-index: 1;
+      user-select: none;
+      animation: title-bob 3s ease-in-out infinite;
+    }
+
+    .title .sub {
+      display: block;
+      font-size: 0.42em;
+      color: var(--orange);
+      letter-spacing: 0.04em;
+      margin-top: 6px;
+      text-shadow:
+         3px  3px 0 var(--dark),
+        -3px  3px 0 var(--dark),
+         3px -3px 0 var(--dark),
+        -3px -3px 0 var(--dark);
+    }
+
+    @keyframes title-bob {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-4px); }
+    }
+
+    /* ── UPYACHKA ────────────────────────────────── */
+    .upyachka-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .svg-wrapper {
+      position: relative;
+      width: 220px;
+      height: 290px;
+    }
+
+    .upyachka-svg {
+      animation: dance 1.6s ease-in-out infinite;
+      filter:
+        drop-shadow(0 14px 0px rgba(26,26,62,.12))
+        drop-shadow(0 6px 20px rgba(26,26,62,.10));
+      transition:
+        filter 0.2s ease,
+        opacity 0.1s ease;
+    }
+
+    .upyachka-wrap:hover .upyachka-svg {
+      animation: kick 0.4s ease-in-out infinite;
+      filter:
+        drop-shadow(0 18px 0 rgba(26,26,62,.18))
+        drop-shadow(0 8px 28px rgba(26,26,62,.16));
+    }
+
+    @keyframes dance {
+      0%, 100% { transform: rotate(-3deg) translateY(0);   }
+      25%       { transform: rotate(0deg)  translateY(-9px); }
+      50%       { transform: rotate(3deg)  translateY(0);   }
+      75%       { transform: rotate(0deg)  translateY(-6px); }
+    }
+
+    @keyframes kick {
+      0%, 100% { transform: rotate(-5deg) translateY(-3px) scale(1.04); }
+      50%       { transform: rotate(5deg)  translateY(3px)  scale(1.07); }
+    }
+
+    /* ── PISUNS ──────────────────────────────────── */
+    .pisun {
+      position: absolute;
+      top: 185px;
+      left: 185px;
+      z-index: 10;
+      pointer-events: none;
+      animation: fly-pisun 0.75s ease-out infinite;
+      opacity: 0;
+    }
+
+    .pisun.paused {
+      animation-play-state: paused;
+      opacity: 0 !important;
+    }
+
+    @keyframes fly-pisun {
+      0%   { transform: translate(-50%,-50%) scale(.5); opacity: 1; }
+      70%  { opacity: .7; }
+      100% {
+        transform: translate(calc(-50% + var(--ex)), calc(-50% + var(--ey)))
+                   rotate(var(--rot)) scale(.6);
+        opacity: 0;
+      }
+    }
+
+    /* ── KICK LABEL ──────────────────────────────── */
+    .kick-label {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.03em;
+      color: var(--dark);
+      background: #FFD54F;
+      border: 3px solid var(--dark);
+      border-radius: 100px;
+      padding: 6px 18px;
+      white-space: nowrap;
+      animation: pop .22s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes pop {
+      0%   { transform: scale(1.5); opacity: 0; }
+      60%  { transform: scale(.96); }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    /* ── INFO ZONE (kick label + counter) ───────── */
+    .info-zone {
+      position: relative;
+      z-index: 1;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── COUNTER ─────────────────────────────────── */
+    .counter {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.03em;
+      color: var(--dark);
+      background: #1a1a3e;
+      color: #FFD54F;
+      border-radius: 100px;
+      padding: 8px 24px;
+      border: 3px solid var(--dark);
+      animation: pop .3s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    /* ── BUTTONS ─────────────────────────────────── */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-sm);
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.07em;
+      padding: 13px 28px;
+      border: 3.5px solid var(--dark);
+      border-radius: 16px;
+      cursor: pointer;
+      color: var(--dark);
+      position: relative;
+      outline: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transform: translateY(0);
+      transition:
+        transform  0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.14s ease;
+    }
+
+    .btn:hover  { transform: translateY(-4px); }
+    .btn:active,
+    .btn.pressed { transform: translateY(4px) !important; }
+
+    .btn:focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+    }
+
+    .btn-red {
+      background: var(--red);
+      box-shadow: 0 5px 0 var(--dark), 0 8px 18px rgba(255,91,91,.22);
+    }
+    .btn-red:hover { box-shadow: 0 9px 0 var(--dark), 0 12px 26px rgba(255,91,91,.32); }
+    .btn-red.pressed, .btn-red:active { box-shadow: 0 1px 0 var(--dark) !important; }
+
+    .btn-blue {
+      background: var(--blue);
+      box-shadow: 0 5px 0 var(--dark), 0 8px 18px rgba(78,184,255,.22);
+    }
+    .btn-blue:hover { box-shadow: 0 9px 0 var(--dark), 0 12px 26px rgba(78,184,255,.32); }
+    .btn-blue.pressed, .btn-blue:active { box-shadow: 0 1px 0 var(--dark) !important; }
+
+    .btn-green {
+      background: var(--green);
+      box-shadow: 0 5px 0 var(--dark), 0 8px 18px rgba(66,216,124,.22);
+    }
+    .btn-green:hover { box-shadow: 0 9px 0 var(--dark), 0 12px 26px rgba(66,216,124,.32); }
+    .btn-green.pressed, .btn-green:active { box-shadow: 0 1px 0 var(--dark) !important; }
+
+    @media (max-width: 480px) {
+      .title { font-size: clamp(1rem, 6vw, 1.5rem); }
+      .btn   { font-size: .95rem; padding: 11px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── DECORATIVE BACKGROUND ─────────────── -->
+  <svg class="sparkles" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g font-family="sans-serif" font-size="22" fill="#1a1a3e" opacity="0.55">
+      <!-- 4-point sparkle stars -->
+      <text x="80"  y="100">✦</text>
+      <text x="1340" y="140">✦</text>
+      <text x="1360" y="620">✦</text>
+      <text x="60"  y="700">✦</text>
+      <text x="720" y="50">✦</text>
+      <text x="200" y="400" font-size="14" opacity="0.4">✦</text>
+      <text x="1250" y="400" font-size="14" opacity="0.4">✦</text>
+      <text x="400" y="820" font-size="16" opacity="0.4">✦</text>
+      <text x="1050" y="800" font-size="16" opacity="0.4">✦</text>
+    </g>
+    <!-- orange accent sparkles -->
+    <g font-family="sans-serif" font-size="18" fill="#FF8C42" opacity="0.6">
+      <text x="140"  y="220">✦</text>
+      <text x="1280" y="280">✦</text>
+      <text x="100"  y="560">✦</text>
+      <text x="1360" y="760">✦</text>
+      <text x="680"  y="840">✦</text>
+    </g>
+    <!-- small dots -->
+    <g fill="#1a1a3e" opacity="0.18">
+      <circle cx="310" cy="130" r="5"/>
+      <circle cx="1130" cy="170" r="5"/>
+      <circle cx="260" cy="760" r="5"/>
+      <circle cx="1180" cy="740" r="5"/>
+      <circle cx="720" cy="860" r="4"/>
+    </g>
+    <!-- wavy lines top corners -->
+    <g stroke="#1a1a3e" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.25">
+      <path d="M 40 60 Q 55 45 70 60 Q 85 75 100 60"/>
+      <path d="M 1340 60 Q 1355 45 1370 60 Q 1385 75 1400 60"/>
+    </g>
+  </svg>
+
+  <!-- ── TITLE ──────────────────────────────── -->
+  <h1 class="title">
+    ОЛОЛО
+    <span class="sub">ПЫЩПЫЩ ПЫЩ</span>
+  </h1>
+
+  <!-- ── UPYACHKA ───────────────────────────── -->
+  <div class="upyachka-wrap" id="upyachka">
+    <div class="svg-wrapper" id="svgWrapper">
+
+      <!-- PISUNS -->
+      <div class="pisun paused" style="--ex:140px;--ey:-55px;--rot:-20deg;animation-delay:0ms"   id="p0">
+        <svg width="46" height="66" viewBox="0 0 28 44" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="14" width="12" height="22" rx="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="14" cy="13" rx="8" ry="7" fill="#ffcc88" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="9"  cy="36" rx="7" ry="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="19" cy="36" rx="7" ry="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <circle cx="11" cy="11" r="2.5" fill="#1a1a3e"/>
+          <circle cx="17" cy="11" r="2.5" fill="#1a1a3e"/>
+          <path d="M 10 16 Q 14 20 18 16" stroke="#1a1a3e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="pisun paused" style="--ex:170px;--ey:5px;--rot:8deg;animation-delay:220ms"  id="p1">
+        <svg width="46" height="66" viewBox="0 0 28 44" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="14" width="12" height="22" rx="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="14" cy="13" rx="8" ry="7" fill="#ffcc88" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="9"  cy="36" rx="7" ry="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="19" cy="36" rx="7" ry="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <circle cx="11" cy="11" r="2.5" fill="#1a1a3e"/>
+          <circle cx="17" cy="11" r="2.5" fill="#1a1a3e"/>
+          <path d="M 10 16 Q 14 20 18 16" stroke="#1a1a3e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="pisun paused" style="--ex:130px;--ey:65px;--rot:32deg;animation-delay:440ms" id="p2">
+        <svg width="46" height="66" viewBox="0 0 28 44" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="14" width="12" height="22" rx="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="14" cy="13" rx="8" ry="7" fill="#ffcc88" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="9"  cy="36" rx="7" ry="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <ellipse cx="19" cy="36" rx="7" ry="6" fill="#ffb347" stroke="#1a1a3e" stroke-width="2"/>
+          <circle cx="11" cy="11" r="2.5" fill="#1a1a3e"/>
+          <circle cx="17" cy="11" r="2.5" fill="#1a1a3e"/>
+          <path d="M 10 16 Q 14 20 18 16" stroke="#1a1a3e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- ── UPYACHKA SVG (cartoon redesign) ─── -->
+      <svg id="upyachkaSvg" class="upyachka-svg"
+           viewBox="0 0 220 290" width="220" height="290"
+           xmlns="http://www.w3.org/2000/svg">
+
+        <!-- ── GROUND SHADOW ─────────────────── -->
+        <ellipse cx="110" cy="282" rx="62" ry="7"
+                 fill="#1a1a3e" opacity="0.12"/>
+
+        <!-- ── LEGS ──────────────────────────── -->
+        <!-- Left leg: black outline, then yellow fill -->
+        <line x1="94"  y1="210" x2="76" y2="264"
+              stroke="#1a1a3e" stroke-width="20" stroke-linecap="round"/>
+        <line x1="94"  y1="210" x2="76" y2="264"
+              stroke="#FFD54F" stroke-width="12" stroke-linecap="round"/>
+
+        <!-- Right leg NORMAL -->
+        <line id="legNorm" x1="126" y1="210" x2="144" y2="264"
+              stroke="#1a1a3e" stroke-width="20" stroke-linecap="round"/>
+        <line id="legNormF" x1="126" y1="210" x2="144" y2="264"
+              stroke="#FFD54F" stroke-width="12" stroke-linecap="round"/>
+
+        <!-- Right leg KICK — forward kick, ~25° from horizontal -->
+        <line id="legKick" x1="126" y1="210" x2="182" y2="188"
+              stroke="#1a1a3e" stroke-width="20" stroke-linecap="round" style="display:none"/>
+        <line id="legKickF" x1="126" y1="210" x2="182" y2="188"
+              stroke="#FFD54F" stroke-width="12" stroke-linecap="round" style="display:none"/>
+
+        <!-- ── BODY ───────────────────────────── -->
+        <rect x="76" y="164" width="68" height="52" rx="18"
+              fill="#FFD54F" stroke="#1a1a3e" stroke-width="5.5"
+              stroke-linejoin="round"/>
+
+        <!-- ── ARMS ───────────────────────────── -->
+        <!-- Left arm -->
+        <line x1="84"  y1="185" x2="34" y2="158"
+              stroke="#1a1a3e" stroke-width="20" stroke-linecap="round"/>
+        <line x1="84"  y1="185" x2="34" y2="158"
+              stroke="#FFD54F" stroke-width="12" stroke-linecap="round"/>
+
+        <!-- Right arm NORMAL -->
+        <line id="armNorm"  x1="136" y1="185" x2="186" y2="158"
+              stroke="#1a1a3e" stroke-width="20" stroke-linecap="round"/>
+        <line id="armNormF" x1="136" y1="185" x2="186" y2="158"
+              stroke="#FFD54F" stroke-width="12" stroke-linecap="round"/>
+
+        <!-- Right arm KICK — punching forward/slightly up -->
+        <line id="armKick"  x1="136" y1="185" x2="190" y2="160"
+              stroke="#1a1a3e" stroke-width="20" stroke-linecap="round" style="display:none"/>
+        <line id="armKickF" x1="136" y1="185" x2="190" y2="160"
+              stroke="#FFD54F" stroke-width="12" stroke-linecap="round" style="display:none"/>
+
+        <!-- ── HEAD ───────────────────────────── -->
+        <!-- Head fill + outline -->
+        <circle cx="110" cy="92" r="76"
+                fill="#FFD54F" stroke="#1a1a3e" stroke-width="5.5"/>
+
+        <!-- ── EYE WHITES ─────────────────────── -->
+        <ellipse cx="84"  cy="80" rx="22" ry="25"
+                 fill="white" stroke="#1a1a3e" stroke-width="4"/>
+        <ellipse cx="136" cy="80" rx="22" ry="25"
+                 fill="white" stroke="#1a1a3e" stroke-width="4"/>
+
+        <!-- ── DROOPY EYELIDS ─────────────────── -->
+        <!-- Cover upper 38% of each eye white with yellow to fake a droopy lid -->
+        <path d="M 62 68 Q 84 54 106 68 L 106 82 Q 84 74 62 82 Z"
+              fill="#FFD54F" stroke="none"/>
+        <path d="M 114 68 Q 136 54 158 68 L 158 82 Q 136 74 114 82 Z"
+              fill="#FFD54F" stroke="none"/>
+        <!-- Re-draw upper arc of eye whites to clean up lid edge -->
+        <path d="M 62 68 Q 84 54 106 68"
+              stroke="#1a1a3e" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M 114 68 Q 136 54 158 68"
+              stroke="#1a1a3e" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+        <!-- ── PUPILS ──────────────────────────── -->
+        <circle cx="87"  cy="86" r="13" fill="#1a1a3e"/>
+        <circle cx="139" cy="86" r="13" fill="#1a1a3e"/>
+        <!-- Eye highlights -->
+        <circle cx="81"  cy="79" r="5" fill="white"/>
+        <circle cx="133" cy="79" r="5" fill="white"/>
+        <!-- Tiny secondary highlight -->
+        <circle cx="91"  cy="91" r="2.5" fill="white" opacity="0.7"/>
+        <circle cx="143" cy="91" r="2.5" fill="white" opacity="0.7"/>
+
+        <!-- ── CHEEKS ──────────────────────────── -->
+        <ellipse cx="56"  cy="104" rx="16" ry="11"
+                 fill="#FF8FAB" opacity="0.65"/>
+        <ellipse cx="164" cy="104" rx="16" ry="11"
+                 fill="#FF8FAB" opacity="0.65"/>
+
+        <!-- ── MOUTH HAPPY ────────────────────── -->
+        <path id="mouthHappy"
+              d="M 76 120 Q 110 155 144 120"
+              stroke="#1a1a3e" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+        <!-- ── MOUTH ANGRY ─────────────────────── -->
+        <path id="mouthAngry"
+              d="M 80 132 Q 110 112 140 132"
+              stroke="#1a1a3e" stroke-width="5" fill="none" stroke-linecap="round"
+              style="display:none"/>
+
+        <!-- ── EYEBROWS (hover only) ───────────── -->
+        <g id="eyebrows" style="display:none">
+          <line x1="64" y1="48" x2="100" y2="58"
+                stroke="#1a1a3e" stroke-width="6" stroke-linecap="round"/>
+          <line x1="120" y1="58" x2="156" y2="48"
+                stroke="#1a1a3e" stroke-width="6" stroke-linecap="round"/>
+        </g>
+
+        <!-- ── FEET ───────────────────────────── -->
+        <!-- Left foot -->
+        <ellipse cx="73" cy="268" rx="20" ry="11"
+                 fill="#FFD54F" stroke="#1a1a3e" stroke-width="4.5"/>
+
+        <!-- Right foot NORMAL -->
+        <ellipse id="footNorm" cx="147" cy="268" rx="20" ry="11"
+                 fill="#FFD54F" stroke="#1a1a3e" stroke-width="4.5"/>
+
+        <!-- Right foot KICK — at new leg endpoint -->
+        <ellipse id="footKick" cx="188" cy="186" rx="20" ry="11"
+                 fill="#FFD54F" stroke="#1a1a3e" stroke-width="4.5"
+                 transform="rotate(-20 188 186)"
+                 style="display:none"/>
+
+        <!-- ── HANDS ───────────────────────────── -->
+        <!-- Left hand -->
+        <circle cx="26" cy="154" r="16"
+                fill="#FFD54F" stroke="#1a1a3e" stroke-width="4.5"/>
+
+        <!-- Right hand NORMAL -->
+        <circle id="handNorm" cx="194" cy="154" r="16"
+                fill="#FFD54F" stroke="#1a1a3e" stroke-width="4.5"/>
+
+        <!-- Right hand KICK — at new arm endpoint -->
+        <circle id="handKick" cx="198" cy="157" r="16"
+                fill="#FFD54F" stroke="#1a1a3e" stroke-width="4.5"
+                style="display:none"/>
+
+      </svg><!-- end upyachka svg -->
+    </div><!-- end svg-wrapper -->
+
+  </div><!-- end upyachka-wrap -->
+
+  <!-- ── INFO ZONE ─────────────────────────── -->
+  <div class="info-zone">
+    <div class="kick-label" id="kickLabel" style="display:none">ПАЦ ПАЦ ПАЦ 💥</div>
+    <p class="counter" id="counter" style="display:none"></p>
+  </div>
+
+  <!-- ── BUTTONS ───────────────────────────── -->
+  <div class="btn-row">
+    <button class="btn btn-red"   id="btnA">ПЫЩПЫЩ</button>
+    <button class="btn btn-blue"  id="btnB">ОЛОЛО</button>
+    <button class="btn btn-green" id="btnC">УПЯЧКА!</button>
+  </div>
+
+</div><!-- end page -->
+
+<script>
+  const upyachka    = document.getElementById('upyachka');
+  const kickLabel   = document.getElementById('kickLabel');
+  const counter     = document.getElementById('counter');
+  const pisuns      = ['p0','p1','p2'].map(id => document.getElementById(id));
+  const eyebrows    = document.getElementById('eyebrows');
+  const mouthHappy  = document.getElementById('mouthHappy');
+  const mouthAngry  = document.getElementById('mouthAngry');
+  const legNorm     = document.getElementById('legNorm');
+  const legNormF    = document.getElementById('legNormF');
+  const legKick     = document.getElementById('legKick');
+  const legKickF    = document.getElementById('legKickF');
+  const armNorm     = document.getElementById('armNorm');
+  const armNormF    = document.getElementById('armNormF');
+  const armKick     = document.getElementById('armKick');
+  const armKickF    = document.getElementById('armKickF');
+  const footNorm    = document.getElementById('footNorm');
+  const footKick    = document.getElementById('footKick');
+  const handNorm    = document.getElementById('handNorm');
+  const handKick    = document.getElementById('handKick');
+
+  let clicks = 0;
+
+  function show(el)  { el.style.display = ''; }
+  function hide(el)  { el.style.display = 'none'; }
+
+  function setHover(on) {
+    on ? show(eyebrows)   : hide(eyebrows);
+    on ? hide(mouthHappy) : show(mouthHappy);
+    on ? show(mouthAngry) : hide(mouthAngry);
+    on ? hide(legNorm)    : show(legNorm);
+    on ? hide(legNormF)   : show(legNormF);
+    on ? show(legKick)    : hide(legKick);
+    on ? show(legKickF)   : hide(legKickF);
+    on ? hide(armNorm)    : show(armNorm);
+    on ? hide(armNormF)   : show(armNormF);
+    on ? show(armKick)    : hide(armKick);
+    on ? show(armKickF)   : hide(armKickF);
+    on ? hide(footNorm)   : show(footNorm);
+    on ? show(footKick)   : hide(footKick);
+    on ? hide(handNorm)   : show(handNorm);
+    on ? show(handKick)   : hide(handKick);
+    // kick label в info-zone — показываем/скрываем, counter скрываем при hover
+    if (on) { show(kickLabel); hide(counter); }
+    else     { hide(kickLabel); if (clicks > 0) show(counter); }
+    pisuns.forEach(p => p.classList.toggle('paused', !on));
+  }
+
+  upyachka.addEventListener('mouseenter', () => setHover(true));
+  upyachka.addEventListener('mouseleave', () => setHover(false));
+
+  // Правильное склонение: 1 раз, 2 раза, 5 раз, 11 раз, 21 раз, 22 раза...
+  function razDecl(n) {
+    const mod10  = n % 10;
+    const mod100 = n % 100;
+    if (mod100 >= 11 && mod100 <= 14) return 'раз';
+    if (mod10 === 1) return 'раз';
+    if (mod10 >= 2 && mod10 <= 4)    return 'раза';
+    return 'раз';
+  }
+
+  function pressBtn(btn) {
+    btn.classList.add('pressed');
+    clicks++;
+    counter.textContent = `нажато ${clicks} ${razDecl(clicks)}! 🔥`;
+    counter.style.display = '';
+    // re-trigger animation
+    counter.style.animation = 'none';
+    void counter.offsetWidth;
+    counter.style.animation = '';
+    setTimeout(() => btn.classList.remove('pressed'), 150);
+  }
+
+  ['btnA','btnB','btnC'].forEach(id => {
+    document.getElementById(id)
+      .addEventListener('pointerdown', e => pressBtn(e.currentTarget));
+  });
+</script>
+</body>
+</html>

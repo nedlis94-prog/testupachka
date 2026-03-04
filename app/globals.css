@@ -1,26 +1,279 @@
 @import "tailwindcss";
 
+/* ===== BASE ===== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --bg1: #0d0221;
+  --bg2: #1a0533;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg1);
+  color: #fff;
+}
+
+/* ===== ФОН ===== */
+.page-bg {
+  background: radial-gradient(ellipse at 20% 50%, #1a0533 0%, #0d0221 60%);
+  position: relative;
+}
+
+/* Звёздное небо */
+.stars {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 60%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 25%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 80%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 40%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 90%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 10%, white 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(2px 2px at 15% 45%, rgba(255,220,100,0.8) 0%, transparent 100%),
+    radial-gradient(2px 2px at 75% 55%, rgba(180,140,255,0.8) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0%   { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* ===== ЗАГОЛОВОК ===== */
+.ololo-text {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  background: linear-gradient(90deg,
+    #ff0080, #ff4500, #ffdd00, #00ff88, #00cfff, #bf00ff, #ff0080
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow 3s linear infinite;
+  filter: drop-shadow(0 0 20px #ff00cc88);
+}
+
+.pysch {
+  font-size: 0.75em;
+  animation: rainbow 3s linear infinite reverse;
+  background: linear-gradient(90deg,
+    #00cfff, #bf00ff, #ff0080, #ff4500, #ffdd00, #00ff88, #00cfff
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes rainbow {
+  0%   { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
+/* ===== УПЯЧКА ===== */
+.upyachka-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.upyachka-svg {
+  animation: dance 1.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 18px #FFE06688) drop-shadow(0 0 40px #FF6B0044);
+  transition: filter 0.2s;
+}
+
+.upyachka-wrap:hover .upyachka-svg {
+  animation: kick 0.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px #FFE066cc) drop-shadow(0 0 60px #FF6B0088);
+}
+
+.halo {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes dance {
+  0%, 100% { transform: rotate(-4deg) translateY(0px); }
+  25%       { transform: rotate(0deg)  translateY(-8px); }
+  50%       { transform: rotate(4deg)  translateY(0px); }
+  75%       { transform: rotate(0deg)  translateY(-5px); }
+}
+
+@keyframes kick {
+  0%, 100% { transform: rotate(-6deg) translateY(-4px) scale(1.05); }
+  50%       { transform: rotate(6deg)  translateY(4px)  scale(1.08); }
+}
+
+@keyframes pulse {
+  0%, 100% { r: 68; opacity: 0.25; }
+  50%       { r: 78; opacity: 0.5; }
+}
+
+.upyachka-shadow {
+  width: 100px;
+  height: 14px;
+  background: radial-gradient(ellipse, rgba(255,200,0,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  margin-top: -6px;
+  animation: shadow-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes shadow-pulse {
+  0%, 100% { transform: scaleX(1);   opacity: 0.5; }
+  25%       { transform: scaleX(0.8); opacity: 0.3; }
+  50%       { transform: scaleX(1);   opacity: 0.5; }
+  75%       { transform: scaleX(0.9); opacity: 0.4; }
+}
+
+/* ===== СЧЁТЧИК ===== */
+.counter-text {
+  position: relative;
+  z-index: 1;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FFE066;
+  text-shadow: 0 0 10px #FF6B00;
+  animation: pop 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes pop {
+  0%   { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+/* ===== ПИСЮНЫ ===== */
+
+/* Обёртка вокруг SVG: пиксели = SVG-координаты */
+.svg-wrapper {
+  position: relative;
+  width: 200px;
+  height: 280px;
+}
+
+.pisun {
+  position: absolute;
+  /* Стартуем с кикающей ноги (SVG-точка 155, 185) */
+  top: 185px;
+  left: 155px;
+  z-index: 10;
+  pointer-events: none;
+  /* infinite — непрерывный поток пока мышь на упячке */
+  animation: fly-pisun 0.75s ease-out infinite;
+  opacity: 0;
+}
+
+@keyframes fly-pisun {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(
+        calc(-50% + var(--ex)),
+        calc(-50% + var(--ey))
+      )
+      rotate(var(--rot))
+      scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* Надпись при ударе */
+.kick-label {
+  position: absolute;
+  bottom: -30px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #FFE066;
+  text-shadow: 0 0 8px #FF6B00;
+  animation: pop 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  white-space: nowrap;
+}
+
+/* Кик анимация */
+.upyachka-kicking {
+  animation: kick 0.35s ease-in-out infinite !important;
+}
+
+/* ===== КНОПКИ ===== */
+.btn {
+  position: relative;
+  z-index: 1;
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  color: white;
+  transition:
+    transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.1s ease;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+.btn:active,
+.btn-pressed {
+  transform: translateY(3px) scale(0.95) !important;
+  box-shadow: none !important;
+}
+
+/* Красная */
+.btn-red {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  box-shadow: 0 6px 0 #991a00, 0 8px 20px rgba(255,75,43,0.5);
+}
+.btn-red:hover {
+  box-shadow: 0 8px 0 #991a00, 0 12px 30px rgba(255,75,43,0.6);
+}
+.btn-red.btn-pressed {
+  box-shadow: 0 2px 0 #991a00, 0 4px 10px rgba(255,75,43,0.3) !important;
+}
+
+/* Синяя */
+.btn-blue {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  box-shadow: 0 6px 0 #006699, 0 8px 20px rgba(79,172,254,0.5);
+}
+.btn-blue:hover {
+  box-shadow: 0 8px 0 #006699, 0 12px 30px rgba(79,172,254,0.6);
+}
+.btn-blue.btn-pressed {
+  box-shadow: 0 2px 0 #006699, 0 4px 10px rgba(79,172,254,0.3) !important;
+  color: #003355;
+}
+
+/* Зелёная */
+.btn-green {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  box-shadow: 0 6px 0 #1a8050, 0 8px 20px rgba(67,233,123,0.5);
+}
+.btn-green:hover {
+  box-shadow: 0 8px 0 #1a8050, 0 12px 30px rgba(67,233,123,0.6);
+}
+.btn-green.btn-pressed {
+  box-shadow: 0 2px 0 #1a8050, 0 4px 10px rgba(67,233,123,0.3) !important;
+  color: #003322;
 }
